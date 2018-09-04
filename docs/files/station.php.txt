@@ -1,0 +1,156 @@
+<?php
+include('index.php');
+/**
+  * cURL request and response
+  *
+  * This function is used for send and receive the XML format. 
+  * * We will convert the XML into Json formats using the simplexml_load_string function
+  * * We Remove the @ character from the json response
+  *
+  * @param string $post_string is used for collect the XML request
+  * @filesource station.php
+  * @api Europecar API
+  * @since 1.0
+  * @return void
+  */
+
+
+
+/**This function is used for send the request and get the response using curl 
+  * @param string $some_string is used for collect the XML request
+
+**/
+
+
+function curlrequest($post_string){
+
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://applications-ptn.europcar.com/xrs/resxml");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+
+    $response = curl_exec($ch);
+
+    $xml = simplexml_load_string($response);
+
+    $json = json_encode($xml);
+
+    $array = json_decode($json,TRUE);
+   
+    curl_close($ch);
+
+    return $array;
+}
+
+/**
+  * Getcountry List
+  *
+  * This function is used to get all country list from the Europecar API
+  * @api Europecar API
+  * @filesource station.php
+  *
+  * @param string $post_string is used for collect the XML request
+  *
+  * @return json country list
+**/
+function getcountries(){
+
+	$post_string = 'XML-Request=<message><serviceRequest serviceCode="getCountries"><serviceParameters><brand code ="EP"/></serviceParameters></serviceRequest>
+</message>&callerCode=22467&password=12012015';
+
+    $countries=curlrequest($post_string);
+
+     
+     $countries=$countries['serviceResponse']['countryList']['country'];
+
+     return $countries;
+     
+
+}
+
+/**
+  * Getcity List
+  *
+  * A *description*, that can span multiple lines, to go _in-depth_ into the details of this element
+  * and to provide some background information or textual references.
+  *
+  * @param string $post_string is used for collect the XML request
+  *
+  * @return json city list
+**/
+
+function getcities($countrycode){
+
+	$post_string = 'XML-Request=<message>
+  <serviceRequest serviceCode="getCities">
+    <serviceParameters>
+      <country countryCode="'.$countrycode.'"/>
+    </serviceParameters>
+  </serviceRequest>
+</message>
+&callerCode=22467&password=12012015';
+
+    $citylist=curlrequest($post_string);
+    $cityhtml='';
+     
+    $cities=$citylist['serviceResponse']['cityList']['city'];
+    
+    foreach ($cities as $city) {
+     $cityhtml .='<option value="'.$city['@attributes']['cityCode'].'">'.$city['@attributes']['cityDescription'].'</option>';
+
+
+    }
+  
+
+    return $cityhtml;
+     
+
+}
+
+/**
+  * Getstation list.
+  *
+  * This function is used for get the stations based on the city code
+  * and to provide some background information or textual references.
+  *
+  * @param string $post_string is used for collect the XML request
+  *
+  * @return json station list
+**/
+
+
+function getstation($countrycode,$cityName){
+
+	$post_string = 'XML-Request=<message>
+  <serviceRequest serviceCode="getStations">
+    <serviceParameters>
+      <station countryCode="FR" cityName="AGEN"/>
+    </serviceParameters>
+  </serviceRequest>
+</message>&callerCode=22467&password=12012015';
+
+    $stations=curlrequest($post_string);
+
+     
+    $station=$stations['serviceResponse']['stationList']['station'];
+
+    $stationhtml='<select name="city">';
+    foreach ($station as $station) {
+     $stationhtml .='<option value="'.$station['@attributes']['stationCode'].'">'.$station['@attributes']['stationName'].'</option>';
+
+
+    }
+    $stationhtml.='</select>';
+
+    return $stationhtml;
+     
+
+}
+
+?>
+
+

@@ -1,0 +1,49 @@
+/* 
+Name : Style
+Description : Custom stlye sheet for forms.
+Author : Ashok
+*/
+
+/****** CSS Reset ******/
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+/****** Global ******/
+body {
+	font-family: 'Roboto', sans-serif;
+}
+label {
+	display: block;
+	font-weight: bold;
+}
+select {
+	width: 100%;
+	padding: 10px 0px;
+	border: 0px;
+	border-bottom: 1px solid #ccc;
+	outline: none;
+}
+h1
+{
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 20px;
+}
+
+/****** Form Elements ******/
+.form-container {
+	max-width: 300px;
+	margin: 20px auto;
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 25px;
+	padding-bottom: 0px;
+	-webkit-box-shadow: 3px 5px 8px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    3px 5px 8px #ccc;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         3px 5px 8px #ccc;
+}
+.form-block {
+	margin-bottom: 25px;
+}

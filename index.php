@@ -9,9 +9,10 @@
 <script>
 $(document).ready(function() {
 
+//ajax call is used for collect the city list based on the country code
 $('#country').change(function() {
 	$.ajax({
-		url: 'apicall.php',
+		url: 'src/apicall.php',
 		type: 'GET',
 		dataType: 'JSON',
 		data: {countrycode : $(this).val(),citydetails : 'citylist'},
@@ -20,11 +21,13 @@ $('#country').change(function() {
 		}
 	});
 });
+
+//This change function used for collect the station list based on the city code 
 $('#citylist').change(function() {
 	var country = $('#country').val();
 	var citylist = $('#citylist').val();
 	$.ajax({
-		url: 'apicall.php',
+		url: 'src/apicall.php',
 		type: 'GET',
 		dataType: 'JSON',
 		data: {countrycode : country,citycode : citylist, stationsdetails : 'stationslist'},
@@ -34,12 +37,13 @@ $('#citylist').change(function() {
 	});
 });
 
+//This ajax call is used for collect the car carcategry list
 $('#stationslist').change(function() {
 	var stationcode = $('#stationslist').val();
 	var pickup = '2018-12-20';
 	if(stationcode !== ''){
 		$.ajax({
-			url: 'apicall.php',
+			url: 'src/apicall.php',
 			type: 'GET',
 			dataType: 'JSON',
 			data: {stationcode : stationcode, pickup : pickup, carcategories: 'carcategories'},
@@ -49,7 +53,7 @@ $('#stationslist').change(function() {
 		});
 		
 		$.ajax({
-			url: 'apicall.php',
+			url: 'src/apicall.php',
 			type: 'GET',
 			dataType: 'JSON',
 			data: {stationcode : stationcode, pickup : pickup, openhours: 'openhours'},
@@ -70,7 +74,7 @@ $('#carcategorylist').change(function() {
 	var begintime = $('#begintime').val();
 	var endtime = $('#endtime').val();
 	$.ajax({
-		url: 'apicall.php',
+		url: 'src/apicall.php',
 		type: 'GET',
 		dataType: 'JSON',
 		data: {stationcode : stationcode, carcategorycode : carcategorycode, pickup : pickup, drop : drop, begintime: begintime, endtime: endtime, quote : 'getquote'},
@@ -85,7 +89,8 @@ $('#carcategorylist').change(function() {
 
 </head>
 <?php 
-include('Europcar.php');
+//include the Europcar.php file for collecting the API response
+include('src/europcar.php');
 
 $countries = $obj->getcountries();
 $cityhtml='';
@@ -131,5 +136,4 @@ $cityhtml='';
 </form>
 </body>
 </html>
-
 

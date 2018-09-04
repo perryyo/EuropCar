@@ -1,0 +1,40 @@
+<?php
+//include the europcar.php file for collection XML response.
+include('Europcar.php');
+
+  //select cities using country code
+  if(isset($_GET['citydetails']) && !empty($_GET['countrycode'])){
+     $countrycode = $_GET['countrycode'];
+  	 $cities = $obj->getcities($countrycode);
+  	 echo json_encode($cities);
+  }
+   //select stations using country code, city code, language
+  if(isset($_GET['stationsdetails']) && !empty($_GET['citycode'])){
+     $data = $_GET;
+  	 $stations = $obj->getstations($data);
+  	 echo json_encode($stations);
+  }
+  
+   //select car categories using station code, pickup date
+  if(isset($_GET['carcategories']) && !empty($_GET['stationcode']) && !empty($_GET['pickup'])){
+     $data = $_GET;
+  	 $carcategories = $obj->getcarcategories($data);
+  	 echo json_encode($carcategories);
+  }
+  
+  //select open hours using station code, pickup date
+  if(isset($_GET['openhours']) && !empty($_GET['stationcode']) && !empty($_GET['pickup'])){
+     $data = $_GET;
+  	 $openhours = $obj->getopenhours($data);
+  	 echo json_encode($openhours);
+  }
+  
+     //select car categories using carcategory code, pickup date
+  if(isset($_GET['quote']) && !empty($_GET['carcategorycode']) && !empty($_GET['pickup'])){
+     $data = $_GET;
+  	 $carcategories = $obj->getquote($data);
+  	 echo json_encode($carcategories);
+  }
+  
+  
+?>
