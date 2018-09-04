@@ -5,14 +5,14 @@ include('europcar.php');
   //select cities using country code
   if(isset($_GET['citydetails']) && !empty($_GET['countrycode'])){
      $countrycode = $_GET['countrycode'];
-     $cities = $obj->getcities($countrycode);
+     $cities = $obj->getCities($countrycode);
      echo json_encode($cities);
   }
    //select stations using country code, city code
   if(isset($_GET['stationsdetails']) && !empty($_GET['citycode'])){
    $countrycode = $_GET['countrycode'];
      $citycode = $_GET['citycode'];
-     $stations = $obj->getstations($countrycode,$citycode);
+     $stations = $obj->getStations($countrycode,$citycode);
      echo json_encode($stations);
   }
   
@@ -20,7 +20,7 @@ include('europcar.php');
   if(isset($_GET['carcategories']) && !empty($_GET['stationcode']) && !empty($_GET['pickup'])){
      $pickup = date('Ymd',strtotime($_GET['pickup']));
    $stationcode = $_GET['stationcode'];
-     $carcategories = $obj->getcarcategories($pickup,$stationcode);
+     $carcategories = $obj->getCarCategories($pickup,$stationcode);
      echo json_encode($carcategories);
   }
   
@@ -28,7 +28,7 @@ include('europcar.php');
   if(isset($_GET['openhours']) && !empty($_GET['stationcode']) && !empty($_GET['pickup'])){
      $pickup = date('Ymd',strtotime($_GET['pickup']));
    $stationcode = $_GET['stationcode'];
-     $openhours = $obj->getopenhours($pickup,$stationcode);
+     $openhours = $obj->getOpenHours($pickup,$stationcode);
      echo json_encode($openhours);
   }
   
@@ -40,6 +40,6 @@ include('europcar.php');
   $stationcode = $_GET['stationcode'];
   $begintime = $_GET['begintime'];
   $endtime = $_GET['endtime'];
-  $getquote = $obj->getquote($pickup,$drop,$carcategorycode,$stationcode,$begintime,$endtime);
+  $getquote = $obj->getQuote($pickup,$drop,$carcategorycode,$stationcode,$begintime,$endtime);
   echo json_encode($getquote);
   }

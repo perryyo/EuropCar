@@ -92,7 +92,7 @@ $('#carcategorylist').change(function() {
 //include the Europcar.php file for collecting the API response
 include('src/europcar.php');
 
-$countries = $obj->getcountries();
+$countries = $obj->getCountries();
 $cityhtml='';
 ?>
 

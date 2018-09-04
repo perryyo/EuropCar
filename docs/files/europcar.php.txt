@@ -24,7 +24,7 @@ class EuropCar{
   * @return json
   */
  
-	public function curlrequest($post_string){
+	public function curlRequest($post_string){
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, "https://applications-ptn.europcar.com/xrs/resxml");
@@ -52,14 +52,14 @@ class EuropCar{
   *
   * @return json country list
 **/
-	public function getcountries(){
+	public function getCountries(){
 	
 		$post_string = 'XML-Request=<message>
 						<serviceRequest serviceCode="getCountries">
 						<serviceParameters><brand code ="EP"/></serviceParameters>
 						</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
-		$countries=$this->curlrequest($post_string);
+		$countries=$this->curlRequest($post_string);
 		$countries=$countries['serviceResponse']['countryList']['country'];
 		return $countries;
 	
@@ -76,7 +76,7 @@ class EuropCar{
   *
   * @return json city list
 **/
-	public function getcities($countrycode){
+	public function getCities($countrycode){
 	
 		$post_string = 'XML-Request=<message>
 	  					<serviceRequest serviceCode="getCities">
@@ -86,7 +86,7 @@ class EuropCar{
 	  					</serviceRequest>
 						</message>
 						&callerCode=22467&password=12012015';
-		$citylist=$this->curlrequest($post_string);
+		$citylist=$this->curlRequest($post_string);
 		$cityhtml='';
 		$cities=$citylist['serviceResponse']['cityList']['city'];
 		$cityhtml .='<option value="">Choose your City</option>';
@@ -109,7 +109,7 @@ class EuropCar{
   * @return json station list
 **/
 
-	public function getstations($countrycode,$citycode){
+	public function getStations($countrycode,$citycode){
 			
 		
 		$post_string = 'XML-Request=<message>
@@ -120,7 +120,7 @@ class EuropCar{
 	  					</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
 	
-		$stations=$this->curlrequest($post_string);
+		$stations=$this->curlRequest($post_string);
 		$station=$stations['serviceResponse']['stationList']['station'];
 		$stationhtml='';
 		$stationhtml .='<option value="">Choose your Stations</option>';
@@ -142,7 +142,7 @@ class EuropCar{
   * @return json Carcategories list
 **/
 
-	public function getcarcategories($pickup,$stationcode){
+	public function getCarCategories($pickup,$stationcode){
 		
 		
 		$post_string = 'XML-Request=<message>
@@ -160,7 +160,7 @@ class EuropCar{
 						</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
 	
-		$carcategoriesxml  =$this->curlrequest($post_string);
+		$carcategoriesxml  =$this->curlRequest($post_string);
 		$carcategories = $carcategoriesxml['serviceResponse']['carCategoryList']['carCategory'];
 		
 		$carcategoryhtml = '';
@@ -185,7 +185,7 @@ class EuropCar{
   * @return json openhours list
 **/
 
-	public function getopenhours($pickup,$stationcode){
+	public function getOpenHours($pickup,$stationcode){
 		
 		
 		
@@ -198,7 +198,7 @@ class EuropCar{
 						</serviceParameters>
 						</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
-		$openhoursxml  =$this->curlrequest($post_string);
+		$openhoursxml  =$this->curlRequest($post_string);
 		$begintime = $openhoursxml['serviceResponse']['openHoursList']['openHours']['attributes']['beginTime'];
 		$endtime = $openhoursxml['serviceResponse']['openHoursList']['openHours']['attributes']['endTime'];
 		$openhours = array($begintime,$endtime);
@@ -221,7 +221,7 @@ class EuropCar{
   * @return json quote information.
 **/
 	
-	public function getquote($pickup,$drop,$carcategorycode,$stationcode,$begintime,$endtime){
+	public function getQuote($pickup,$drop,$carcategorycode,$stationcode,$begintime,$endtime){
 		
 		$post_string = 'XML-Request=<message>
 						<serviceRequest serviceCode="getQuote">
@@ -241,7 +241,7 @@ class EuropCar{
 						</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
 	
-		$quotexml  =$this->curlrequest($post_string);
+		$quotexml  =$this->curlRequest($post_string);
 		
 		return $quotexml;
 	}
@@ -284,7 +284,7 @@ class EuropCar{
 						</serviceRequest>
 						</message>&callerCode=22467&password=12012015';
 	
-		$quotexml  =$this->curlrequest($post_string);
+		$quotexml  =$this->curlRequest($post_string);
 		
 		return $quotexml;
 	}
