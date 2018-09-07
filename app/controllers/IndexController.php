@@ -69,9 +69,17 @@ class IndexController extends Controller
             "Content-Type: application/x-www-form-urlencoded"
         ));
         $response = curl_exec($ch);
-        $xml      = simplexml_load_string($response);
-        $json     = str_replace('@attributes', 'attributes', json_encode($xml));
-        $array    = json_decode($json, TRUE);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if($http_status==200 && $array['serviceResponse']['attributes']['returnCode']=='OK'){
+            $xml      = simplexml_load_string($response);
+            $json     = str_replace('@attributes', 'attributes', json_encode($xml));
+            $array    = json_decode($json, TRUE);
+        
+        }else{
+            echo '<script>alert("Invalid Response")</script>';
+			exit;
+        }
+        
         curl_close($ch);
         return $array;
     }
