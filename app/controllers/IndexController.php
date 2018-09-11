@@ -70,16 +70,18 @@ class IndexController extends Controller
         ));
         $response = curl_exec($ch);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $xml      = simplexml_load_string($response);
+        $json     = str_replace('@attributes', 'attributes', json_encode($xml));
+        header('Content-type:application/json;charset=utf-8');
+       
+        $array    = json_decode($json, TRUE);
         if($http_status==200 && $array['serviceResponse']['attributes']['returnCode']=='OK'){
-            $xml      = simplexml_load_string($response);
-            $json     = str_replace('@attributes', 'attributes', json_encode($xml));
-            $array    = json_decode($json, TRUE);
+           print_r($json);
+        exit;
         
         }else{
-            echo '<script>alert("Invalid Response")</script>';
-			exit;
+        echo '<script>alert("Invalid Response")</script>';
         }
-        
         curl_close($ch);
         return $array;
     }
